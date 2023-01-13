@@ -1,13 +1,13 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id(ConfigData.application)
+    kotlin(ConfigData.android)
 }
 
 android {
-    namespace = "dev.pinkroom.pokedex.android"
+    namespace = ConfigData.androidAppId
     compileSdk = ConfigData.compileSdk
     defaultConfig {
-        applicationId = "dev.pinkroom.pokedex.android"
+        applicationId = ConfigData.androidAppId
         minSdk = ConfigData.minSdk
         targetSdk = ConfigData.targetSdk
         versionCode = ConfigData.code
@@ -15,6 +15,12 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    kotlinOptions { // TODO remove when compose compiler version is updated
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.composeCompiler
@@ -40,5 +46,20 @@ dependencies {
         implementation(foundation)
         implementation(material)
         implementation(activity)
+        implementation(lifecycle)
+        implementation(paging)
+    }
+    // Shared ViewModels
+    implementation(Deps.KMMViewModels.core)
+    // Koin
+    with(Deps.Koin) {
+        implementation(core)
+        implementation(android)
+        implementation(compose)
+    }
+    // Image loading
+    with(Deps.Landscapist) {
+        implementation(coil)
+        implementation(placeholder)
     }
 }
