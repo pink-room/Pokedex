@@ -1,0 +1,16 @@
+CREATE TABLE LocalPokemon (
+  name TEXT NOT NULL PRIMARY KEY,
+  url Text NOT NULL
+);
+
+getAllPaging:
+SELECT *
+FROM LocalPokemon
+LIMIT :limit OFFSET :offset;
+
+insert:
+INSERT OR REPLACE INTO LocalPokemon(name,url)
+VALUES ?;
+
+deleteAll:
+DELETE FROM LocalPokemon;

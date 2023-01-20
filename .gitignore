@@ -8,3 +8,6 @@ captures
 .cxx
 local.properties
 xcuserdata
+/iosApp/iosApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+/iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+/iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
