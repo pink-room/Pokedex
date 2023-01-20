@@ -7,16 +7,21 @@ import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
 import dev.pinkroom.pokedex.data.models.Pokemon
 import dev.pinkroom.pokedex.data.service.PokedexService
+import dev.pinkroom.pokedex.local.PokemonDao
 import dev.pinkroom.pokedex.utils.CommonFlow
 import dev.pinkroom.pokedex.utils.asCommonFlow
+import dev.pinkroom.pokedex.utils.toPokemon
+import dev.pinkroom.pokedex.utils.toPokemonModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.KoinComponent
 
-class PokedexRepository(private val pokedexService: PokedexService) : KoinComponent {
+class PokedexRepository(
+    private val pokedexService: PokedexService,
+    private val pokemonDao: PokemonDao,
+) : KoinComponent {
 
     companion object {
         private const val PAGING_SIZE = 20L
@@ -38,10 +43,23 @@ class PokedexRepository(private val pokedexService: PokedexService) : KoinCompon
                 items = getPokemons(key),
                 currentKey = key,
                 prevKey = { null },
-                nextKey = { key + 1 })
+                nextKey = { key + 1 }
+            )
         }
     )
 
-    private suspend fun getPokemons(key: Long): List<Pokemon> =
-        pokedexService.getPokemons(PAGING_SIZE, key * PAGING_SIZE).results
+    private suspend fun getPokemons(key: Long): List<Pokemon> {
+        val local = pokemonDao.get(PAGING_SIZE, key * PAGING_SIZE)
+        return if (local.isEmpty()) getPokemonsRemote(key) else local.map { it.toPokemon() }
+    }
+
+    private suspend fun getPokemonsRemote(key: Long): List<Pokemon> = try {
+        val result = pokedexService.getPokemons(PAGING_SIZE, key * PAGING_SIZE)
+        if (key == 0L) pokemonDao.deleteAll()
+        pokemonDao.insert(result.results.map { it.toPokemonModel() })
+        result.results
+    } catch (e: Exception) {
+        // TODO
+        emptyList()
+    }
 }

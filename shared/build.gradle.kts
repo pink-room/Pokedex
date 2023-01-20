@@ -45,6 +45,7 @@ kotlin {
             dependencies {
                 implementation(Deps.Ktorfit.clientAndroid)
                 implementation(Deps.KMMViewModels.lifecycle)
+                implementation(Deps.SqlDelight.androidDriver)
             }
         }
         val androidTest by creating
@@ -56,6 +57,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation(Deps.SqlDelight.nativeDriver)
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -90,5 +94,22 @@ kotlin.sourceSets.all {
 sqldelight {
     database("PokemonDatabase") {
         packageName = "dev.pinkroom.pokedex"
+    }
+}
+
+// TODO remove when SqlDelight 1.5.5 is released
+afterEvaluate {
+    for (task in tasks) {
+        if (task.group != "sqldelight") continue
+        if (task.name == "generateSqlDelightInterface" || task.name == "verifySqlDelightMigration") {
+            continue
+        }
+
+        if (
+            !task.name.startsWith("generateCommonMain") &&
+            !task.name.startsWith("verifyCommonMain")
+        ) {
+            task.enabled = false
+        }
     }
 }

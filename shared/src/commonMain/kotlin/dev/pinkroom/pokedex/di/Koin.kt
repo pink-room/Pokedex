@@ -2,10 +2,13 @@ package dev.pinkroom.pokedex.di
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.create
+import dev.pinkroom.pokedex.PokemonDatabase
 import dev.pinkroom.pokedex.data.repository.DetailsRepository
 import dev.pinkroom.pokedex.data.repository.PokedexRepository
 import dev.pinkroom.pokedex.data.service.DetailsService
 import dev.pinkroom.pokedex.data.service.PokedexService
+import dev.pinkroom.pokedex.local.DatabaseDriverFactory
+import dev.pinkroom.pokedex.local.PokemonDao
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
@@ -36,6 +39,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { createJson() }
     single { createHttpClient(get(), get(), enableNetworkLogs = enableNetworkLogs) }
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
+    databaseModule()
     pokedexModule()
     detailsModule()
 }
@@ -60,9 +64,15 @@ fun createHttpClient(
     return Ktorfit.Builder().httpClient(client).build()
 }
 
+private fun Module.databaseModule() {
+    single {
+        PokemonDao(PokemonDatabase(get<DatabaseDriverFactory>().createDriver()).localPokemonQueries)
+    }
+}
+
 private fun Module.pokedexModule() {
     single { injectPokedexService(get()) }
-    single { PokedexRepository(get()) }
+    single { PokedexRepository(get(), get()) }
 }
 
 private fun Module.detailsModule() {

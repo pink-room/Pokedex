@@ -34,5 +34,5 @@ object Versions {
     const val landscapist = "2.1.0"
 
     // Database
-    const val sqlDelight = "1.5.3"
+    const val sqlDelight = "1.5.4"
 }
