@@ -96,20 +96,3 @@ sqldelight {
         packageName = "dev.pinkroom.pokedex"
     }
 }
-
-// TODO remove when SqlDelight 1.5.5 is released
-afterEvaluate {
-    for (task in tasks) {
-        if (task.group != "sqldelight") continue
-        if (task.name == "generateSqlDelightInterface" || task.name == "verifySqlDelightMigration") {
-            continue
-        }
-
-        if (
-            !task.name.startsWith("generateCommonMain") &&
-            !task.name.startsWith("verifyCommonMain")
-        ) {
-            task.enabled = false
-        }
-    }
-}

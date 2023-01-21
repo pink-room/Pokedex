@@ -16,12 +16,6 @@ android {
     buildFeatures {
         compose = true
     }
-    kotlinOptions { // TODO remove when compose compiler version is updated
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
-        )
-    }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.composeCompiler
     }

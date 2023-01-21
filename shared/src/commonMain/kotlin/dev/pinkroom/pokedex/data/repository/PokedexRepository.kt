@@ -27,7 +27,7 @@ class PokedexRepository(
         private const val PAGING_SIZE = 20L
     }
 
-    var scope: CoroutineScope = MainScope() // TODO can I inject this?
+    var scope: CoroutineScope = MainScope()
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val pokedexPagingData: CommonFlow<PagingData<Pokemon>>
@@ -59,7 +59,6 @@ class PokedexRepository(
         pokemonDao.insert(result.results.map { it.toPokemonModel() })
         result.results
     } catch (e: Exception) {
-        // TODO
         emptyList()
     }
 }

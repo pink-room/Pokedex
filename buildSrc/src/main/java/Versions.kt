@@ -3,7 +3,7 @@ object Versions {
     const val gradle = "7.3.1"
 
     // Compose
-    const val composeCompiler = "1.4.0-alpha02"
+    const val composeCompiler = "1.4.0"
     const val activityCompose = "1.6.1"
     const val lifecycle = "2.6.0-alpha03"
 
