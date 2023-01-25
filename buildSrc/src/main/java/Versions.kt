@@ -1,6 +1,6 @@
 object Versions {
     const val kotlin = "1.8.0"
-    const val gradle = "7.3.1"
+    const val gradle = "7.4.0"
 
     // Compose
     const val composeCompiler = "1.4.0"
