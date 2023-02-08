@@ -5,5 +5,5 @@ import org.koin.core.component.KoinComponent
 
 class DetailsRepository(private val detailsService: DetailsService) : KoinComponent {
 
-    suspend fun getDetails(name: String) = kotlin.runCatching { detailsService.getDetails(name) }
+    suspend fun getDetails(name: String) = runCatching { detailsService.getDetails(name) }
 }
