@@ -35,8 +35,7 @@ For the shared code the following are used:
 
 ## Open API
 
-Pokedex using the [PokeAPI](https://pokeapi.co/) for constructing RESTful API.<br>
-PokeAPI provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
+[PokeAPI](https://pokeapi.co/) provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
 
 ## Additional resources 
 - [Kotlin Multiplatform](https://kotlinlang.org/docs/reference/multiplatform.html) 
