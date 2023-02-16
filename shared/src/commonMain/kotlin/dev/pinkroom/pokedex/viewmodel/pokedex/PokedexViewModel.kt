@@ -2,7 +2,6 @@ package dev.pinkroom.pokedex.viewmodel.pokedex
 
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.coroutineScope
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import dev.pinkroom.pokedex.data.repository.PokedexRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,12 +20,12 @@ class PokedexViewModel : KMMViewModel(), KoinComponent {
     @NativeCoroutinesState
     val effect = _effect.asSharedFlow()
 
-
     init {
         pokedexRepository.scope = viewModelScope.coroutineScope
     }
 
     val pokemons = pokedexRepository.pokedexPagingData
+
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val pager = pokedexRepository.pager
 
