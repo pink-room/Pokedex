@@ -8,6 +8,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,12 +51,26 @@ private fun PokedexContent(viewModel: PokedexViewModel, pokemons: LazyPagingItem
 
 @Composable
 private fun Pokedex(viewModel: PokedexViewModel, pokemons: LazyPagingItems<Pokemon>) {
+    TopAppBarUI()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 4.dp),
         contentPadding = PaddingValues(vertical = 8.dp)
     ) { items(pokemons) { it?.let { PokedexRow(viewModel, it) } } }
+}
+
+@Composable
+fun TopAppBarUI() {
+    TopAppBar(
+        backgroundColor = Color.White,
+        title = {
+            Text(
+                color = Color.Black,
+                text = "Pokemons"
+            )
+        }
+    )
 }
 
 @Composable
